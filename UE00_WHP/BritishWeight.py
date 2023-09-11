@@ -18,3 +18,19 @@ class BritishWeight:
         elif self.pounds == 0:
             return f"{self.stones} st"
         return f"{self.stones} st {self.pounds} lb"
+
+    @property
+    def pounds(self):
+        """
+        property for lb
+        :return: pounds
+        """
+        return self._lb % 14
+
+    @property
+    def stones(self):
+        """
+        property for stones
+        :return: stones
+        """
+        return self._lb // 14
