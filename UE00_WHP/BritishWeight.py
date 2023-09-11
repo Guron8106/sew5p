@@ -1,4 +1,13 @@
 class BritishWeight:
+    """
+    >>> a = BritishWeight(29)
+    >>> b = BritishWeight(4)
+    >>> print(BritishWeight(14))
+    1 st
+    >>> print(BritishWeight(3))
+    3 lb
+    """
+
     def __init__(self, lb):
         """
         Constructor Class for BritishWeights
