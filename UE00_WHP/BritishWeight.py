@@ -45,7 +45,7 @@ class BritishWeight:
         return self._lb // 14
 
 
-if __name__  == '__main__':
+if __name__ == '__main__':
     a = BritishWeight(27)
     b = BritishWeight(30)
     print(a)
