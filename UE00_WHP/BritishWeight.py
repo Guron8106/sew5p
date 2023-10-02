@@ -1,3 +1,6 @@
+__author__ = "Karanbir Guron"
+__status__ = "Abgenommen"
+
 class BritishWeight:
     """
     >>> a = BritishWeight(29)
