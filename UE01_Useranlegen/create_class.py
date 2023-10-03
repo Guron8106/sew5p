@@ -12,6 +12,17 @@ def shave_marks(txt: str):
                      if not unicodedata.combining(c))
     return unicodedata.normalize('NFC', shaved)
 
+def get_user():
+    """
+    Generator for user
+    min_row = 2, damit die erste Row mit den Übrschriften übersprungen wird
+    to use user as a tuple
+    """
+    for row in ws.iter_rows(min_row=2):
+        klasse = str(row[0].value).lower()
+        raum = str(row[1].value)
+        kv = str(row[2].value)
+        yield klasse, raum, kv
 
 
 if __name__ == "__main__":
