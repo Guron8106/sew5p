@@ -35,6 +35,13 @@ def get_user():
         kv = str(row[2].value)
         yield klasse, raum, kv
 
+def userdel(user):
+    """
+    Writes userdel command in  File
+    """
+    delete = f'userdel {user[0]} && rm -rf /home/klassen/k{user[0]}'
+    with open("res/delete_class.sh", "a") as file:
+        print(delete, file=file)
 
 if __name__ == "__main__":
     wb = load_workbook("Klassenraeume_2023.xlsx", read_only=True)
