@@ -35,6 +35,22 @@ def get_user():
         kv = str(row[2].value)
         yield klasse, raum, kv
 
+
+def generate_scripts():
+    """
+    Generates scripts and iterates through the users
+    set -e = errexit
+    set -x = xtrace debugging
+    for _ in range(10): This part creates a loop that repeats 10 times (range(10)). During each iteration, a random letter is chosen.
+    ''.join(...): This part joins the random letters generated in each iteration together into a single string. ''
+    """
+    with open("res/create_class.sh", "w") as file:
+        print("set -e", file=file)
+    with open("res/delete_class.sh", "w") as file:
+        print("set -x", file=file)
+    open("res/passwords_class.txt", "w").close()
+
+
 def userdel(user):
     """
     Writes userdel command in  File
@@ -42,6 +58,7 @@ def userdel(user):
     delete = f'userdel {user[0]} && rm -rf /home/klassen/k{user[0]}'
     with open("res/delete_class.sh", "a") as file:
         print(delete, file=file)
+
 
 if __name__ == "__main__":
     wb = load_workbook("Klassenraeume_2023.xlsx", read_only=True)
