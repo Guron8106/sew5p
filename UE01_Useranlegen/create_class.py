@@ -1,3 +1,4 @@
+import random
 import unicodedata
 
 from openpyxl.reader.excel import load_workbook
@@ -11,6 +12,14 @@ def shave_marks(txt: str):
     shaved = ''.join(c for c in norm_txt
                      if not unicodedata.combining(c))
     return unicodedata.normalize('NFC', shaved)
+
+def generate_password(user: tuple):
+    """
+    Generates Password for a user
+    """
+    special_chars = "!%&(),._-=^#!%&(),._-=^#"
+    return f'{user[0]}{random.choice(special_chars)}{user[1]}' \
+           f'{random.choice(special_chars)}{user[2]}{random.choice(special_chars)}'
 
 def get_user():
     """
