@@ -13,6 +13,7 @@ def shave_marks(txt: str):
                      if not unicodedata.combining(c))
     return unicodedata.normalize('NFC', shaved)
 
+
 def generate_password(user: tuple):
     """
     Generates Password for a user
@@ -20,6 +21,7 @@ def generate_password(user: tuple):
     special_chars = "!%&(),._-=^#!%&(),._-=^#"
     return f'{user[0]}{random.choice(special_chars)}{user[1]}' \
            f'{random.choice(special_chars)}{user[2]}{random.choice(special_chars)}'
+
 
 def get_user():
     """
