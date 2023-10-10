@@ -59,6 +59,18 @@ def userdel(user):
     with open("res/delete_class.sh", "a") as file:
         print(delete, file=file)
 
+def useradd(user, pw):
+    """
+    Writes useradd command in respective File
+    user[0][0] accesses the first character of the first element in the user tuple.
+    user[0] = klasse
+    """
+    create = f'useradd -d /home/klassen/{"k" if user[0][0].isdigit() else ""}{user[0]} -c "{user[0]}" -m ' \
+             f'-g cdrom,plugdev,sambashare -s /bin/bash {user[0]} && ' \
+             f'echo {user[0]}:\"{pw}\" | chpasswd'
+    with open("res/create_class.sh", "a") as file:
+        print(create, file=file)
+
 
 if __name__ == "__main__":
     wb = load_workbook("Klassenraeume_2023.xlsx", read_only=True)
