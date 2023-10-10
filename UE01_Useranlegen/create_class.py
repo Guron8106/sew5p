@@ -59,6 +59,8 @@ def userdel(user):
     with open("res/delete_class.sh", "a") as file:
         print(delete, file=file)
 
+
+
 def useradd(user, pw):
     """
     Writes useradd command in respective File
