@@ -61,6 +61,7 @@ def userdel(user):
 
 
 
+
 def useradd(user, pw):
     """
     Writes useradd command in respective File
@@ -72,6 +73,14 @@ def useradd(user, pw):
              f'echo {user[0]}:\"{pw}\" | chpasswd'
     with open("res/create_class.sh", "a") as file:
         print(create, file=file)
+
+
+def addpasswd(user, pw):
+    """
+    Writes user with their password in respective File
+    """
+    with open("res/passwords_class.txt", "a") as file:
+        print(user[0], pw, file=file, sep=":")
 
 
 if __name__ == "__main__":
