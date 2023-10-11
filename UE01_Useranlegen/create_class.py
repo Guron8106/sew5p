@@ -51,6 +51,14 @@ def generate_scripts():
     open("res/passwords_class.txt", "w").close()
 
 
+def create_user_entry(user, pw):
+    """
+    Creates a line in the create, delete script and in the password file for the given user
+    """
+    useradd(user, pw)
+    userdel(user)
+    addpasswd(user, pw)
+
 def userdel(user):
     """
     Writes userdel command in  File
