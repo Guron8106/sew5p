@@ -1,9 +1,12 @@
+import argparse
+import logging
 import random
 import string
+import sys
 import unicodedata
+from logging.handlers import RotatingFileHandler
 
 from openpyxl.reader.excel import load_workbook
-
 
 def shave_marks(txt: str):
     """
@@ -20,6 +23,7 @@ def generate_password(user: tuple):
     Generates Password for a user
     """
     special_chars = "!%&(),._-=^#!%&(),._-=^#"
+    logger.debug("generated password")
     return f'{user[0]}{random.choice(special_chars)}{user[1]}' \
            f'{random.choice(special_chars)}{user[2]}{random.choice(special_chars)}'
 
@@ -46,8 +50,10 @@ def generate_scripts():
     ''.join(...): This part joins the random letters generated in each iteration together into a single string. ''
     """
     with open("res/create_class.sh", "w") as file:
+        logger.debug("opened file " + file.name)
         print("set -e", file=file)
     with open("res/delete_class.sh", "w") as file:
+        logger.debug("opened file " + file.name)
         print("set -x", file=file)
     open("res/passwords_class.txt", "w").close()
     create_user_entry(("lehrer",), ''.join(random.choice(string.ascii_letters) for _ in range(10)))
@@ -55,6 +61,7 @@ def generate_scripts():
     for user in get_user():
         pw = generate_password(user)
         create_user_entry(user, pw)
+
 
 def create_user_entry(user, pw):
     """
@@ -64,15 +71,16 @@ def create_user_entry(user, pw):
     userdel(user)
     addpasswd(user, pw)
 
+
 def userdel(user):
     """
     Writes userdel command in  File
     """
     delete = f'userdel {user[0]} && rm -rf /home/klassen/k{user[0]}'
     with open("res/delete_class.sh", "a") as file:
+        logger.debug("opened file " + file.name)
         print(delete, file=file)
-
-
+        logger.info("wrote userdel into " + file.name)
 
 
 def useradd(user, pw):
@@ -85,7 +93,9 @@ def useradd(user, pw):
              f'-g cdrom,plugdev,sambashare -s /bin/bash {user[0]} && ' \
              f'echo {user[0]}:\"{pw}\" | chpasswd'
     with open("res/create_class.sh", "a") as file:
+        logger.debug("opened file " + file.name)
         print(create, file=file)
+        logger.info("wrote useradd into " + file.name)
 
 
 def addpasswd(user, pw):
@@ -93,9 +103,14 @@ def addpasswd(user, pw):
     Writes user with their password in respective File
     """
     with open("res/passwords_class.txt", "a") as file:
+        logger.debug("opened file " + file.name)
         print(user[0], pw, file=file, sep=":")
+        logger.info("wrote password into file for user in " + file.name)
+
 
 
 if __name__ == "__main__":
     wb = load_workbook("Klassenraeume_2023.xlsx", read_only=True)
     ws = wb[wb.sheetnames[0]]
+    logger = logging.getLogger()
+
