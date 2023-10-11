@@ -1,4 +1,5 @@
 import random
+import string
 import unicodedata
 
 from openpyxl.reader.excel import load_workbook
@@ -49,7 +50,11 @@ def generate_scripts():
     with open("res/delete_class.sh", "w") as file:
         print("set -x", file=file)
     open("res/passwords_class.txt", "w").close()
-
+    create_user_entry(("lehrer",), ''.join(random.choice(string.ascii_letters) for _ in range(10)))
+    create_user_entry(("seminar",), ''.join(random.choice(string.ascii_letters) for _ in range(10)))
+    for user in get_user():
+        pw = generate_password(user)
+        create_user_entry(user, pw)
 
 def create_user_entry(user, pw):
     """
