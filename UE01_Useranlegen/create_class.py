@@ -110,7 +110,42 @@ def addpasswd(user, pw):
 
 
 if __name__ == "__main__":
-    wb = load_workbook("Klassenraeume_2023.xlsx", read_only=True)
-    ws = wb[wb.sheetnames[0]]
+    parser = argparse.ArgumentParser()
+    output_group = parser.add_mutually_exclusive_group()
+    output_group.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
+    output_group.add_argument("-q", "--quiet", help="decrease output verbosity", action="store_true")
+    parser.add_argument("file", help="file with the userdata")
+    args = parser.parse_args()
+
     logger = logging.getLogger()
+
+    formatter = logging.Formatter("%(asctime)s; %(levelname)s; %(message)s",
+                                  "%Y-%m-%d %H:%M:%S")
+
+    rotating_file_handler = RotatingFileHandler("res/create_class.log", maxBytes=10000, backupCount=5)
+    rotating_file_handler.setFormatter(formatter)
+    logger.addHandler(rotating_file_handler)
+
+    stream_handler = logging.StreamHandler(sys.stderr)
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+
+    if args.verbose:
+        stream_handler.setLevel(logging.DEBUG)
+    elif args.quiet:
+        stream_handler.setLevel(logging.CRITICAL)
+    else:
+        stream_handler.setLevel(logging.INFO)
+
+    logger.setLevel(logging.DEBUG)
+
+    try:
+        # wb = load_workbook(args.file, read_only=True)
+        wb = load_workbook("Klassenraeume_2023.xlsx", read_only=True)
+        ws = wb[wb.sheetnames[0]]
+        generate_scripts()
+    except FileNotFoundError:
+        logger.critical("couldnt find file")
+    except Exception as e:
+        logger.exception("Exception occurred: %s", e)
 
