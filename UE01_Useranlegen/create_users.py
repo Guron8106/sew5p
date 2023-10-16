@@ -44,6 +44,15 @@ def get_user():
         yield user
 
 
+def generate_scripts():
+    """Generates scripts and iterates through the users
+    """
+    with open("res/create_user.sh", "w") as file:
+        print("set -e", file=file)
+    with open("res/delete_user.sh", "w") as file:
+        print("set -x", file=file)
+    open("res/passwords_user.txt", "w").close()
+
 if __name__ == '__main__':
     wb = load_workbook("Namen.xlsx", read_only=True)
     ws = wb[wb.sheetnames[0]]
