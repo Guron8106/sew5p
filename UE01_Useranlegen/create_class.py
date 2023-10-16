@@ -8,6 +8,7 @@ from logging.handlers import RotatingFileHandler
 
 from openpyxl.reader.excel import load_workbook
 
+
 def shave_marks(txt: str):
     """
     Remove all diacritic marks
@@ -108,7 +109,6 @@ def addpasswd(user, pw):
         logger.info("wrote password into file for user in " + file.name)
 
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     output_group = parser.add_mutually_exclusive_group()
@@ -130,7 +130,6 @@ if __name__ == "__main__":
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
 
-
     if args.verbose:
         stream_handler.setLevel(logging.DEBUG)
     elif args.quiet:
@@ -149,4 +148,3 @@ if __name__ == "__main__":
         logger.critical("couldnt find file")
     except Exception as e:
         logger.exception("Exception occurred: %s", e)
-
