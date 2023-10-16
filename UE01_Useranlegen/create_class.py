@@ -130,6 +130,7 @@ if __name__ == "__main__":
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
 
+
     if args.verbose:
         stream_handler.setLevel(logging.DEBUG)
     elif args.quiet:
