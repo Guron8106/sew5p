@@ -1,4 +1,5 @@
 import random
+import re
 import string
 import unicodedata
 from collections import namedtuple
@@ -63,6 +64,13 @@ def generate_scripts():
         users[login_name] = login_name
         pw = generate_password()
         user = user._replace(login_name=login_name)
+
+
+def userdel(user):
+    """Writes userdel command in respective File"""
+    with open("res/delete_user.sh", "a") as file:
+        delete = f'userdel {user.login_name} && rm -rf /home/klassen/{user.login_name}'
+        print(delete, file=file)
 
 if __name__ == '__main__':
     wb = load_workbook("Namen.xlsx", read_only=True)
