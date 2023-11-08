@@ -52,6 +52,17 @@ def generate_scripts():
     with open("res/delete_user.sh", "w") as file:
         print("set -x", file=file)
     open("res/passwords_user.txt", "w").close()
+    users = dict()
+    for user in get_user():
+        login_name = user.nname
+        counter = 1
+        while login_name in users:
+            login_name = re.sub(r"(\d+)", "", login_name)
+            login_name += str(counter)
+            counter += 1
+        users[login_name] = login_name
+        pw = generate_password()
+        user = user._replace(login_name=login_name)
 
 if __name__ == '__main__':
     wb = load_workbook("Namen.xlsx", read_only=True)
