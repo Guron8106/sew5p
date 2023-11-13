@@ -72,6 +72,14 @@ def userdel(user):
         delete = f'userdel {user.login_name} && rm -rf /home/klassen/{user.login_name}'
         print(delete, file=file)
 
+def useradd(user, pw):
+    """Writes useradd command in respective File"""
+    create = f'useradd -d "/home/{user.login_name}" -c "{user.vname + " " + user.nname}" -m ' \
+             f'-g {user.group}{"," + user.u_class if user.group == "student" else ""} -s "/bin/bash {user.login_name}" && ' \
+             f'echo {user.login_name}:\"{pw}\" | chpasswd'
+    with open("res/create_user.sh", "a", encoding="utf-8") as file:
+        print(create, file=file)
+
 if __name__ == '__main__':
     wb = load_workbook("Namen.xlsx", read_only=True)
     ws = wb[wb.sheetnames[0]]
