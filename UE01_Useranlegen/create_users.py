@@ -80,6 +80,11 @@ def useradd(user, pw):
     with open("res/create_user.sh", "a", encoding="utf-8") as file:
         print(create, file=file)
 
+def addpasswd(user, pw):
+    """Writes user with their password in respective File"""
+    with open("res/passwords_user.txt", "a") as file:
+        print(user.login_name, pw, file=file, sep=":")
+
 if __name__ == '__main__':
     wb = load_workbook("Namen.xlsx", read_only=True)
     ws = wb[wb.sheetnames[0]]
