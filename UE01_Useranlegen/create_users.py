@@ -15,6 +15,7 @@ def shave_marks(txt):
     erg = unicodedata.normalize('NFC', shaved)
     return erg
 
+
 def generate_password():
     """Generates Password for a user
     for _ in range(10): This part creates a loop that repeats 10 times (range(10)). During each iteration,
@@ -23,6 +24,7 @@ def generate_password():
     """
     password_chars = string.ascii_letters + "!%&(),._-=^#!%&(),._-=^#"
     return ''.join(random.choice(password_chars) for _ in range(10))
+
 
 def get_user():
     """Generator for user
@@ -72,6 +74,15 @@ def userdel(user):
         delete = f'userdel {user.login_name} && rm -rf /home/klassen/{user.login_name}'
         print(delete, file=file)
 
+def create_user_entry(user, pw):
+    """
+    Creates a line in the create, delete script and in the password file for the given user
+
+    """
+    useradd(user, pw)
+    userdel(user)
+    addpasswd(user, pw)
+
 def useradd(user, pw):
     """Writes useradd command in respective File"""
     create = f'useradd -d "/home/{user.login_name}" -c "{user.vname + " " + user.nname}" -m ' \
@@ -80,10 +91,12 @@ def useradd(user, pw):
     with open("res/create_user.sh", "a", encoding="utf-8") as file:
         print(create, file=file)
 
+
 def addpasswd(user, pw):
     """Writes user with their password in respective File"""
     with open("res/passwords_user.txt", "a") as file:
         print(user.login_name, pw, file=file, sep=":")
+
 
 if __name__ == '__main__':
     wb = load_workbook("Namen.xlsx", read_only=True)
