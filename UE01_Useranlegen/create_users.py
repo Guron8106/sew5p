@@ -1,10 +1,13 @@
+import logging
 import random
-import re
 import string
+import argparse
+import re
 import unicodedata
 from collections import namedtuple
 
-from openpyxl.reader.excel import load_workbook
+from logging.handlers import RotatingFileHandler
+from openpyxl import load_workbook
 
 
 def shave_marks(txt):
@@ -23,6 +26,7 @@ def generate_password():
 
     """
     password_chars = string.ascii_letters + "!%&(),._-=^#!%&(),._-=^#"
+    logger.debug("generated password")
     return ''.join(random.choice(password_chars) for _ in range(10))
 
 
@@ -49,10 +53,21 @@ def get_user():
 
 def generate_scripts():
     """Generates scripts and iterates through the users
+
+                    login_name = re.sub(r"(\d+)", "", login_name)
+                -> darf nicht mit Zahl anfangen
+
+            login_name = re.sub(r"(\d+)", "", login_name)
+            login_name += str(counter)
+            counter += 1
+            -> Damit die Benutzernamen unique sind
+            -> siehe Shell Skript
     """
     with open("res/create_user.sh", "w") as file:
+        logger.debug("opened file " + file.name)
         print("set -e", file=file)
     with open("res/delete_user.sh", "w") as file:
+        logger.debug("opened file " + file.name)
         print("set -x", file=file)
     open("res/passwords_user.txt", "w").close()
     users = dict()
@@ -66,13 +81,8 @@ def generate_scripts():
         users[login_name] = login_name
         pw = generate_password()
         user = user._replace(login_name=login_name)
+        create_user_entry(user, pw)
 
-
-def userdel(user):
-    """Writes userdel command in respective File"""
-    with open("res/delete_user.sh", "a") as file:
-        delete = f'userdel {user.login_name} && rm -rf /home/klassen/{user.login_name}'
-        print(delete, file=file)
 
 def create_user_entry(user, pw):
     """
@@ -83,21 +93,35 @@ def create_user_entry(user, pw):
     userdel(user)
     addpasswd(user, pw)
 
+
+def userdel(user):
+    """Writes userdel command in respective File"""
+    with open("res/delete_user.sh", "a") as file:
+        logger.debug("opened file " + file.name)
+        delete = f'userdel {user.login_name} && rm -rf /home/klassen/{user.login_name}'
+        print(delete, file=file)
+        logger.info("wrote userdel into " + file.name)
+
+
 def useradd(user, pw):
     """Writes useradd command in respective File"""
     create = f'useradd -d "/home/{user.login_name}" -c "{user.vname + " " + user.nname}" -m ' \
              f'-g {user.group}{"," + user.u_class if user.group == "student" else ""} -s "/bin/bash {user.login_name}" && ' \
              f'echo {user.login_name}:\"{pw}\" | chpasswd'
     with open("res/create_user.sh", "a", encoding="utf-8") as file:
+        logger.debug("opened file " + file.name)
         print(create, file=file)
+        logger.info("wrote useradd into " + file.name)
 
 
 def addpasswd(user, pw):
     """Writes user with their password in respective File"""
     with open("res/passwords_user.txt", "a") as file:
+        logger.debug("opened file " + file.name)
         print(user.login_name, pw, file=file, sep=":")
-
+        logger.info("wrote password into file for user in " + file.name)
 
 if __name__ == '__main__':
     wb = load_workbook("Namen.xlsx", read_only=True)
     ws = wb[wb.sheetnames[0]]
+    logger = logging.getLogger()
