@@ -114,6 +114,7 @@ def useradd(user, pw):
         logger.info("wrote useradd into " + file.name)
 
 
+
 def addpasswd(user, pw):
     """Writes user with their password in respective File"""
     with open("res/passwords_user.txt", "a") as file:
