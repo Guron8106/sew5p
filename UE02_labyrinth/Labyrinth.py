@@ -1,4 +1,5 @@
 import argparse
+import time
 
 maps = [
     [
@@ -62,6 +63,18 @@ maps = [
 ]
 
 
+def readMaze(file):
+    """
+    Reading Maze from txt File
+
+    :param file: txt-File
+    :return: lines of String
+    """
+    with open(file, 'r') as datei:
+        lines = datei.readlines()
+    return [line.strip() for line in lines]
+
+
 def fromStrings(mapsItem):
     """
     Converting String maze to List
@@ -99,9 +112,17 @@ def suche(zeile, spalte, lab):
     if lab[zeile][spalte] == 'A':
         return 1
 
-    lab[zeile][spalte] = '.'
+    if args.delay:
+        lab[zeile][spalte] = 'X'
+    else:
+        lab[zeile][spalte] = '.'
 
-    printLabyrinth(lab)
+
+    if args.print:
+        printLabyrinth(lab)
+    if args.delay:
+        lab[zeile][spalte] = '.'
+        time.sleep(args.delay / 1000)
 
     if (suche(zeile + 1, spalte, lab) or
             suche(zeile - 1, spalte, lab) or
@@ -131,6 +152,19 @@ def suchenAlle(zeile, spalte, lab):
 
     if lab[zeile][spalte] == 'A':
         return 1
+
+    # Falls Delay dann wird es in einer Spielersicht angezeigt
+    if args.delay:
+        lab[zeile][spalte] = 'X'
+    else:
+        lab[zeile][spalte] = '.'
+
+
+    if args.print:
+        printLabyrinth(lab)
+    if args.delay:
+        lab[zeile][spalte] = '.'
+        time.sleep(args.delay / 1000)
 
     counter += suchenAlle(zeile + 1, spalte, lab)
     counter += suchenAlle(zeile - 1, spalte, lab)
