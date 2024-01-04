@@ -1,4 +1,6 @@
 import argparse
+import io
+import pstats
 import time
 
 maps = [
@@ -189,6 +191,32 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    labyrinth = fromStrings(maps[2])
+    labyrinth = fromStrings(readMaze(args.file))
     if args.print:
         printLabyrinth(labyrinth)
+
+    if args.time:
+        pr = cProfile.Profile()
+        pr.enable()
+
+        wegAnzahl = suchenAlle(args.XSTART, args.YSTART, labyrinth)
+
+        pr.disable()
+
+        print(f"Anzahl gefundener Wege: {wegAnzahl}")
+
+        s = io.StringIO()
+        sortby = 'cumulative'
+        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+        ps.print_stats()
+        profile_results = s.getvalue()
+
+        # Ergebnisse in einer Datei speichern
+        with open('profile_results.txt', 'w') as file:
+            file.write(s.getvalue())
+
+        s.close()
+        print("Profilergebnisse in 'profile_results.txt' gespeichert.")
+    else:
+        wegAnzahl = suchenAlle(args.XSTART, args.YSTART, labyrinth)
+        print(f"Anzahl gefundener Wege: {wegAnzahl}")
