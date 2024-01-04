@@ -1,3 +1,5 @@
+import argparse
+
 maps = [
     [
         "############",
@@ -141,5 +143,17 @@ def suchenAlle(zeile, spalte, lab):
 
 
 if __name__ == "__main__":
-    print(suche(5, 5, fromStrings(maps[2])))
-    print(suchenAlle(5, 5, fromStrings(maps[2])))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-x", "--XSTART", type=int, help="x-coordinate to start")
+    parser.add_argument("-y", "--YSTART", type=int, help="y-coordinate to start")
+    parser.add_argument("-p", "--print", help="print output of every solution", action="store_true")
+    parser.add_argument("-t", "--time", help="print total calculation time (in milliseconds)", action="store_true")
+    parser.add_argument("-d", "--delay", type=int, help="delay after printing a solution (in milliseconds)")
+
+    parser.add_argument("file", help="file with the userdata")
+
+    args = parser.parse_args()
+
+    labyrinth = fromStrings(maps[2])
+    if args.print:
+        printLabyrinth(labyrinth)
