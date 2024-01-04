@@ -59,3 +59,12 @@ maps = [
         "###########A#"
     ]
 ]
+
+def fromStrings(mapsItem):
+    """
+    Converting String maze to List
+
+    :param mapsItem: String of Maze
+    :return: list
+    """
+    return [list(row) for row in mapsItem]
