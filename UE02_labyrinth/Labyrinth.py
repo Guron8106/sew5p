@@ -113,4 +113,8 @@ def suche(zeile, spalte, lab):
 
     return 0
 
+if __name__ == "__main__":
+    print(suche(5, 5, fromStrings(maps[2])))
+
+
 
