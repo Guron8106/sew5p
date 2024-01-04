@@ -68,3 +68,14 @@ def fromStrings(mapsItem):
     :return: list
     """
     return [list(row) for row in mapsItem]
+
+
+def printLabyrinth(lab):
+    """
+    Print the Labyrinth
+
+    :param lab:  Labyrinth
+    :return: print Maze
+    """
+    for row in lab:
+        print("".join(row))
