@@ -1,0 +1,14 @@
+         22169 function calls (21266 primitive calls) in 3.723 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    904/1    0.005    0.000    3.723    3.723 /Users/karan/PycharmProjects/sew5p/UE02_labyrinth/Labyrinth.py:86(suche)
+      304    3.674    0.012    3.674    0.012 {built-in method time.sleep}
+      304    0.005    0.000    0.044    0.000 /Users/karan/PycharmProjects/sew5p/UE02_labyrinth/Labyrinth.py:81(printLabyrinth)
+     9424    0.033    0.000    0.033    0.000 {built-in method builtins.print}
+     9424    0.006    0.000    0.006    0.000 {method 'join' of 'str' objects}
+     1808    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+
+
