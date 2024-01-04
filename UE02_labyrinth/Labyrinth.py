@@ -1,4 +1,3 @@
-
 maps = [
     [
         "############",
@@ -60,6 +59,7 @@ maps = [
     ]
 ]
 
+
 def fromStrings(mapsItem):
     """
     Converting String maze to List
@@ -99,9 +99,7 @@ def suche(zeile, spalte, lab):
 
     lab[zeile][spalte] = '.'
 
-
     printLabyrinth(lab)
-
 
     if (suche(zeile + 1, spalte, lab) or
             suche(zeile - 1, spalte, lab) or
@@ -113,8 +111,35 @@ def suche(zeile, spalte, lab):
 
     return 0
 
+
+def suchenAlle(zeile, spalte, lab):
+    """
+    Recursive searching and counting all possible ways
+
+    :param zeile: Start-Pos X
+    :param spalte: Start-Pos Y
+    :param lab: Labyrinth
+    :return: Boolean 1 or 0
+    """
+    counter = 0
+
+    if zeile < 0 or zeile >= len(lab) or spalte < 0 or spalte >= len(lab[zeile]) or lab[zeile][spalte] == '#' or \
+            lab[zeile][spalte] == 'X' or lab[zeile][spalte] == '.':
+        return 0
+
+    if lab[zeile][spalte] == 'A':
+        return 1
+
+    counter += suchenAlle(zeile + 1, spalte, lab)
+    counter += suchenAlle(zeile - 1, spalte, lab)
+    counter += suchenAlle(zeile, spalte + 1, lab)
+    counter += suchenAlle(zeile, spalte - 1, lab)
+
+    lab[zeile][spalte] = ' '
+
+    return counter
+
+
 if __name__ == "__main__":
     print(suche(5, 5, fromStrings(maps[2])))
-
-
-
+    print(suchenAlle(5, 5, fromStrings(maps[2])))
