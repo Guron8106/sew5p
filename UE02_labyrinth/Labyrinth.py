@@ -75,6 +75,7 @@ def readMaze(file):
     return [line.strip() for line in lines]
 
 
+
 def fromStrings(mapsItem):
     """
     Converting String maze to List
