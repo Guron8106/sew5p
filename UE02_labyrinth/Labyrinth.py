@@ -78,7 +78,6 @@ def readMaze(file):
     return [line.strip() for line in lines]
 
 
-
 def fromStrings(mapsItem):
     """
     Converting String maze to List
@@ -121,7 +120,6 @@ def suche(zeile, spalte, lab):
     else:
         lab[zeile][spalte] = '.'
 
-
     if args.print:
         printLabyrinth(lab)
     if args.delay:
@@ -162,7 +160,6 @@ def suchenAlle(zeile, spalte, lab):
         lab[zeile][spalte] = 'X'
     else:
         lab[zeile][spalte] = '.'
-
 
     if args.print:
         printLabyrinth(lab)
