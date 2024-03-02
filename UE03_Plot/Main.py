@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy
 import math
 
+import numpy as np
+
 CNT = 1024
 PI = math.pi
 
@@ -21,6 +23,8 @@ def plot():
     # Aufgabe 1 Linienart und Farbe
     plt.plot(X,C, color="brown", linewidth=2.5, linestyle='-.', label="cosine")
     plt.plot(X,S, color="green", linewidth=2.5, linestyle='-.', label="sine")
+
+
 
     plt.legend(loc='upper left', frameon=False)
 
@@ -48,13 +52,27 @@ def plot():
                  xytext=(-90, -50), textcoords='offset points', fontsize=16,
                  arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.2"))
 
+    t_34 = math.radians(45)
+    plt.plot([t_34, t_34], [0, math.cos(t_34)], color='red', linewidth=2.5, linestyle="--")
+    plt.scatter([t_34, ], [math.cos(t_34), ], 50, color='red')
+    plt.annotate(r'$\sin(45°)=\frac{\sqrt{2}}{2}$',
+                 xy=(t_34, math.sin(t_34)), xycoords='data',
+                 xytext=(+10, +50), textcoords='offset points', fontsize=16,
+                 arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.2"))
+
     for label in ax.get_xticklabels() + ax.get_yticklabels():
         label.set_fontsize(16)
     label.set_bbox(dict(facecolor='white', edgecolor='None', alpha=0.65))
     ax.set_axisbelow(True)
 
+    #Titelzeile
+    ax.set_title("Plot von Karanbir Guron, HTL3R", fontsize=20)
+
+
+    ax.quiver(np.pi + 0.25, 0, 0.2, 0, angles='xy', scale_units='xy', scale=1, color="black", clip_on=False)
+    ax.quiver(0, 1.0, 0, 0.12, angles='xy', scale_units='xy', scale=1, color="black", clip_on=False)
+
     plt.show()
 
 if __name__ == "__main__":
-    print(X)
     plot()
