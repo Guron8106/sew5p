@@ -24,7 +24,6 @@ def parse_gitlogs():
 def drawplot(commit_dates):
     days = [commit_date.weekday() +1 for commit_date in commit_dates]
     hours = [commit_date.hour for commit_date in commit_dates]
-
     # Angenommen, commit_dates ist eine Liste von datetime-Objekten der Commits
     commit_times = [(d.weekday(), d.hour) for d in commit_dates]
     commit_count = Counter(commit_times)
