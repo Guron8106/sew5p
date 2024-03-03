@@ -19,6 +19,7 @@ def parse_gitlogs():
 def drawplot(commit_dates):
     days = [commit_date.weekday() +1 for commit_date in commit_dates]
     hours = [commit_date.hour for commit_date in commit_dates]
+
     # Angenommen, commit_dates ist eine Liste von datetime-Objekten der Commits
     commit_times = [(d.weekday(), d.hour) for d in commit_dates]
     commit_count = Counter(commit_times)
@@ -26,23 +27,20 @@ def drawplot(commit_dates):
     # Erstellen Sie eine Liste von Größen für die Scatter-Punkte, basierend auf der Anzahl der Commits
     sizes = [commit_count[(day, hour)] * 100 for day, hour in commit_times]
 
-    plt.figure(figsize=(10, 6), dpi=80)
-    plt.scatter(hours, days, sizes=sizes, alpha=0.75)
-
-    for y in days:
-        plt.axhline(y, color='black', linestyle="-", linewidth=1)
-    for x in hours:
-        plt.axvline(x, color='black', linestyle="-", linewidth=1)
+    plt.figure(figsize=(9, 6), dpi=80)
+    plt.scatter(hours, days, sizes=sizes, alpha=0.5)
 
     ax = plt.gca()
-    # TODO
     ax.xaxis.set_major_locator(ticker.MultipleLocator(5))
     ax.tick_params(which='major', axis='x', direction='in', length=4, bottom=True, top=True)
 
-    plt.xlim(-5, 25)
-    plt.ylim(1, 7)
+    plt.title(r'Karanbir Guron:  ')
+
+    plt.xlim(1, 23)
     plt.yticks([1, 2, 3, 4, 5, 6, 7],
                [r'mon', r'tue', r'wed', r'thu', r'fri', r'sat', r'sun'])
+
+    plt.grid()
 
     plt.savefig("git_logs.png", dpi=80)
     plt.show()
