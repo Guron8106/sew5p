@@ -1,13 +1,8 @@
 import subprocess
+from collections import Counter
 
 import matplotlib.pyplot as plt
 from dateutil import parser as dt
-import subprocess
-from dateutil import parser
-import matplotlib.dates as mdates
-from collections import Counter
-import datetime
-
 from matplotlib import ticker
 
 
