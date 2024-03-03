@@ -1,36 +1,59 @@
 import subprocess
 
 import matplotlib.pyplot as plt
-import numpy
-import math
+from dateutil import parser as dt
 import subprocess
-import numpy as np
+from dateutil import parser
+import matplotlib.dates as mdates
+from collections import Counter
+import datetime
+
+from matplotlib import ticker
 
 
 def parse_gitlogs():
-    cmd = ['git', 'log', '--pretty=format:%H|%an|%ad|%s', '--date=short']
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cmd = ['git', 'log', '--pretty=format:%aI']
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
     stdout, stderr = process.communicate()
 
-    date = []
-    # Parsen der Ausgabe
-    for line in stdout.decode('utf-8').split('\n'):
-        commit_hash, author_name, commit_date, commit_message = line.split('|')
-        #print(f"Commit: {commit_hash}")
-        #print(f"Autor: {author_name}")
-        #print(f"Datum: {commit_date}")
-        date.append(commit_date)
-        #print(f"Nachricht: {commit_message}\n")
-    print(date)
+    commit_dates = [dt.parse(date_str) for date_str in stdout.strip().split('\n')]
+    return commit_dates
 
-def drawplot():
-    logs = parse_gitlogs()
-    print(logs)
-    return
+
+def drawplot(commit_dates):
+    days = [commit_date.weekday() +1 for commit_date in commit_dates]
+    hours = [commit_date.hour for commit_date in commit_dates]
+
+    # Angenommen, commit_dates ist eine Liste von datetime-Objekten der Commits
+    commit_times = [(d.weekday(), d.hour) for d in commit_dates]
+    commit_count = Counter(commit_times)
+
+    # Erstellen Sie eine Liste von Größen für die Scatter-Punkte, basierend auf der Anzahl der Commits
+    sizes = [commit_count[(day, hour)] * 100 for day, hour in commit_times]
+
+    plt.figure(figsize=(10, 6), dpi=80)
+    plt.scatter(hours, days, sizes=sizes, alpha=0.75)
+
+    for y in days:
+        plt.axhline(y, color='black', linestyle="-", linewidth=1)
+    for x in hours:
+        plt.axvline(x, color='black', linestyle="-", linewidth=1)
+
+    ax = plt.gca()
+    # TODO
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(5))
+    ax.tick_params(which='major', axis='x', direction='in', length=4, bottom=True, top=True)
+
+    plt.xlim(-5, 25)
+    plt.ylim(1, 7)
+    plt.yticks([1, 2, 3, 4, 5, 6, 7],
+               [r'mon', r'tue', r'wed', r'thu', r'fri', r'sat', r'sun'])
+
+    plt.savefig("git_logs.png", dpi=80)
+    plt.show()
 
 
 
 if __name__ == "__main__":
-
-    drawplot()
+    drawplot(parse_gitlogs())
