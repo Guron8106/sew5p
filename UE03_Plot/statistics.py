@@ -34,7 +34,9 @@ def drawplot(commit_dates):
     ax.xaxis.set_major_locator(ticker.MultipleLocator(5))
     ax.tick_params(which='major', axis='x', direction='in', length=4, bottom=True, top=True)
 
-    plt.title(r'Karanbir Guron:  ')
+    plt.title(fr'Karanbir Guron: {len(commit_count)} commits')
+    plt.ylabel("Wochentage")
+    plt.xlabel("Uhrzeit")
 
     plt.xlim(1, 23)
     plt.yticks([1, 2, 3, 4, 5, 6, 7],
