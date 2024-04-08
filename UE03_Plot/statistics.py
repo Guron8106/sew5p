@@ -7,29 +7,39 @@ from matplotlib import ticker
 
 
 def parse_gitlogs():
+    """
+    Parsing gitlogs
+    :return: commit days
+    """
     cmd = ['git', 'log', '--pretty=format:%aI']
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
     stdout, stderr = process.communicate()
-    print(stdout)
 
     commit_dates = [dt.parse(date_str) for date_str in stdout.strip().split('\n')]
+    # Alle Commit Dates in datetime format
+    print(commit_dates)
     return commit_dates
 
 
 def drawplot(commit_dates):
-    days = [commit_date.weekday() +1 for commit_date in commit_dates]
+    """
+    Drawing plot with given commits
+    :param commit_dates: all given commit dates
+    :return: plot
+    """
+    days = [commit_date.weekday() + 1 for commit_date in commit_dates]
     hours = [commit_date.hour for commit_date in commit_dates]
 
-    # Angenommen, commit_dates ist eine Liste von datetime-Objekten der Commits
+    # commit_dates ist eine Liste von datetime-Objekten der Commits
     commit_times = [(d.weekday(), d.hour) for d in commit_dates]
     commit_count = Counter(commit_times)
 
-    # Erstellen Sie eine Liste von Größen für die Scatter-Punkte, basierend auf der Anzahl der Commits
+    # Liste von Größen für die Scatter-Punkte, basierend auf der Anzahl der Commits
     sizes = [commit_count[(day, hour)] * 100 for day, hour in commit_times]
 
     plt.figure(figsize=(9, 6), dpi=80)
-    plt.scatter(hours, days, sizes=sizes, alpha=0.5)
+    plt.scatter(hours, days, sizes=sizes, alpha=0.5, color='blue')
 
     ax = plt.gca()
     ax.xaxis.set_major_locator(ticker.MultipleLocator(5))
@@ -47,7 +57,6 @@ def drawplot(commit_dates):
 
     plt.savefig("git_logs.png", dpi=80)
     plt.show()
-
 
 
 if __name__ == "__main__":

@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
-import numpy
 import math
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 CNT = 1024
@@ -12,6 +11,10 @@ C = [math.cos(x) for x in X]
 S = [math.sin(x) for x in X]
 
 def plot():
+    """
+    Drawing PI Plot
+    :return: plot
+    """
     plt.figure(figsize=(10,6), dpi=80)
     plt.xlim(min(X) * 1.1, max(X) * 1.1)
     plt.ylim(min(C) * 1.1, max(C) * 1.1)
@@ -21,7 +24,7 @@ def plot():
                [r'$-1$', r'$0$', r'$+1$'])
 
     # Aufgabe 1 Linienart und Farbe
-    plt.plot(X,C, color="brown", linewidth=2.5, linestyle='-.', label="cosine")
+    plt.plot(X,C, color="gold", linewidth=2.5, linestyle='-.', label="cosine")
     plt.plot(X,S, color="green", linewidth=2.5, linestyle='-.', label="sine")
 
 
@@ -60,6 +63,21 @@ def plot():
                  xytext=(+10, +50), textcoords='offset points', fontsize=16,
                  arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.2"))
 
+    t_34m = math.radians(-45)
+    plt.plot([t_34m, t_34m], [0, math.cos(t_34m)], color='red', linewidth=2.5, linestyle="--")
+    plt.scatter([t_34m, ], [math.cos(t_34m), ], 50, color='red')
+    plt.annotate(r'$\sin(45°)=\frac{\sqrt{2}}{2}$',
+                 xy=(t_34m, math.sin(t_34m)), xycoords='data',
+                 xytext=(+10, +50), textcoords='offset points', fontsize=16,
+                 arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.2"))
+
+    plt.plot([t_34m, t_34m], [0, math.sin(t_34m)], color='red', linewidth=2.5, linestyle="--")
+    plt.scatter([t_34m, ], [math.cos(t_34m), ], 50, color='red')
+    plt.annotate(r'$\sin(45°)=\frac{\sqrt{2}}{2}$',
+                 xy=(t_34m, math.sin(t_34m)), xycoords='data',
+                 xytext=(+10, +50), textcoords='offset points', fontsize=16,
+                 arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.2"))
+
     for label in ax.get_xticklabels() + ax.get_yticklabels():
         label.set_fontsize(16)
     label.set_bbox(dict(facecolor='white', edgecolor='None', alpha=0.65))
@@ -72,6 +90,7 @@ def plot():
     ax.quiver(np.pi + 0.25, 0, 0.2, 0, angles='xy', scale_units='xy', scale=1, color="black", clip_on=False)
     ax.quiver(0, 1.0, 0, 0.12, angles='xy', scale_units='xy', scale=1, color="black", clip_on=False)
 
+    plt.savefig("pi.png", dpi=80)
     plt.show()
 
 if __name__ == "__main__":
