@@ -11,6 +11,7 @@ def parse_gitlogs():
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
     stdout, stderr = process.communicate()
+    print(stdout)
 
     commit_dates = [dt.parse(date_str) for date_str in stdout.strip().split('\n')]
     return commit_dates
